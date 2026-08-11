@@ -57,6 +57,79 @@ const registerUser = async (req, res) => {
   }
 };
 
-module.exports = {
-  registerUser
+// @desc    Authenticate user & get token
+// @route   POST /api/auth/login
+// @access  Public
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // 1. Validation
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Please provide email and password' });
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+
+    // 2. Check if user exists
+    const [users] = await dbPool.query('SELECT * FROM users WHERE email = ?', [normalizedEmail]);
+    if (users.length === 0) {
+      return res.status(400).json({ message: 'Invalid email or password' });
+    }
+
+    const user = users[0];
+
+    // 3. Verify Password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid email or password' });
+    }
+
+    // 4. Generate JWT Token
+    const jwt = require('jsonwebtoken');
+    const secret = process.env.JWT_SECRET || 'codeprep_super_secret_jwt_key_2026';
+    const token = jwt.sign(
+      { id: user.id, name: user.name, email: user.email, role: user.role },
+      secret,
+      { expiresIn: '1d' }
+    );
+
+    // 5. Response
+    return res.status(200).json({
+      message: 'Login successful',
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+
+  } catch (error) {
+    console.error('Login Error:', error);
+    return res.status(500).json({ message: 'Server error during login', error: error.message });
+  }
 };
+
+// @desc    Get current user profile
+// @route   GET /api/auth/me
+// @access  Private
+const getMe = async (req, res) => {
+  try {
+    const [users] = await dbPool.query('SELECT id, name, email, role, created_at FROM users WHERE id = ?', [req.user.id]);
+    if (users.length === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    return res.status(200).json({ user: users[0] });
+  } catch (error) {
+    return res.status(500).json({ message: 'Server error fetching user profile', error: error.message });
+  }
+};
+
+module.exports = {
+  registerUser,
+  loginUser,
+  getMe
+};
+
