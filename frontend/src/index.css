@@ -488,10 +488,118 @@ body {
   padding: 1.2rem 1.8rem;
 }
 
-.take-assessment-header h1 {
-  font-size: 1.6rem;
-  margin-bottom: 0.2rem;
+/* Assessment Result Card */
+.result-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 0;
 }
+
+.result-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 2.8rem;
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+}
+
+.result-header {
+  text-align: center;
+}
+
+.result-header h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 0.3rem;
+}
+
+.assessment-title-sub {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  margin-bottom: 1rem;
+}
+
+.status-badge {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.4rem 1.2rem;
+  border-radius: 20px;
+}
+
+.status-pass {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.status-fail {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.result-summary-box {
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.result-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dashed var(--border-color);
+  padding-bottom: 0.8rem;
+  font-size: 1.05rem;
+}
+
+.result-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.result-label {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.result-value {
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.highlight-text {
+  color: var(--secondary-color);
+}
+
+.text-success {
+  color: var(--success-color);
+}
+
+.text-danger {
+  color: var(--danger-color);
+}
+
+.result-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.result-actions button {
+  flex: 1;
+}
+
 
 .header-badges {
   display: flex;

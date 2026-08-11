@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import Questions from './pages/Questions';
 import Assessments from './pages/Assessments';
 import TakeAssessment from './pages/TakeAssessment';
+import AssessmentResult from './pages/AssessmentResult';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -41,6 +42,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <TakeAssessment />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/results/:attemptId"
+                element={
+                  <ProtectedRoute>
+                    <AssessmentResult />
                   </ProtectedRoute>
                 }
               />

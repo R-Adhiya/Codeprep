@@ -82,10 +82,18 @@ const TakeAssessment = () => {
     }
   };
 
-  const submitAssessment = () => {
-    // Stage 14 will implement scoring API submission
-    console.log('Submitting assessment answers:', answers);
-    alert('Assessment submitted! Proceeding...');
+  const submitAssessment = async () => {
+    try {
+      setLoading(true);
+      const res = await API.post(`/assessments/${id}/submit`, { answers });
+      if (res.data && res.data.attemptId) {
+        navigate(`/results/${res.data.attemptId}`);
+      }
+    } catch (error) {
+      console.error('Failed to submit assessment:', error);
+      alert('Error submitting assessment. Please try again.');
+      setLoading(false);
+    }
   };
 
   const handleAnswerChange = (questionId, value) => {
