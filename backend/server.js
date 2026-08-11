@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const { testConnection } = require('./config/db');
+const { errorHandler } = require('./middleware/error.middleware');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -37,6 +38,9 @@ app.get('/api/health', async (req, res) => {
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to CodePrep API' });
 });
+
+// Global Error Handler Middleware
+app.use(errorHandler);
 
 // Start Server & Test Database Connection
 app.listen(PORT, async () => {

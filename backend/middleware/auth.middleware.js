@@ -21,12 +21,12 @@ const protect = (req, res, next) => {
       return next();
     } catch (error) {
       console.error('Token verification failed:', error.message);
-      return res.status(401).json({ message: 'Not authorized, token failed' });
+      return res.status(401).json({ message: 'Session expired or invalid token. Please sign in again.' });
     }
   }
 
   if (!token) {
-    return res.status(401).json({ message: 'Not authorized, no token provided' });
+    return res.status(401).json({ message: 'Authentication required. Please log in to access this feature.' });
   }
 };
 
@@ -35,7 +35,7 @@ const adminOnly = (req, res, next) => {
   if (req.user && req.user.role === 'ADMIN') {
     return next();
   }
-  return res.status(403).json({ message: 'Access denied: Admin role required' });
+  return res.status(403).json({ message: 'Access denied: Admin privileges are required to access this resource.' });
 };
 
 module.exports = {
