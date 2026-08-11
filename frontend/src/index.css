@@ -280,12 +280,58 @@ body {
 }
 
 
-/* Cards & Grids */
-.features-grid, .action-grid, .stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
+/* Dashboard */
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
 }
+
+.dashboard-header h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+}
+
+.dashboard-subtitle {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+}
+
+.dashboard-actions h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.action-header {
+  margin-bottom: 0.8rem;
+}
+
+.action-badge {
+  display: inline-block;
+  background-color: rgba(14, 165, 233, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(14, 165, 233, 0.3);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  margin-bottom: 0.4rem;
+}
+
+.action-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.action-card p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  flex: 1;
+}
+
 
 .feature-card, .action-card, .stat-card {
   background-color: var(--card-bg);
