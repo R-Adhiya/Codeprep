@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Questions from './pages/Questions';
+import Assessments from './pages/Assessments';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -33,6 +34,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/questions" element={<Questions />} />
+              <Route path="/assessments" element={<Assessments />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route
