@@ -14,6 +14,7 @@ import ResultsHistory from './pages/ResultsHistory';
 import InterviewPrep from './pages/InterviewPrep';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminCodingQuestions from './pages/AdminCodingQuestions';
+import AdminInterviewQuestions from './pages/AdminInterviewQuestions';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -94,6 +95,14 @@ function App() {
                 element={
                   <AdminRoute>
                     <AdminCodingQuestions />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/admin/interview"
+                element={
+                  <AdminRoute>
+                    <AdminInterviewQuestions />
                   </AdminRoute>
                 }
               />
