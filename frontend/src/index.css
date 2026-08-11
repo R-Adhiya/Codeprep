@@ -195,6 +195,65 @@ body {
   justify-content: center;
 }
 
+/* Landing Modules */
+.landing-modules {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 2rem;
+}
+
+.module-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 2.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5rem;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.module-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary-color);
+}
+
+.module-header h2 {
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.module-badge {
+  display: inline-block;
+  background-color: rgba(79, 70, 229, 0.15);
+  color: #818cf8;
+  border: 1px solid rgba(79, 70, 229, 0.3);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+}
+
+.module-desc {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.module-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  color: var(--text-main);
+  font-size: 0.95rem;
+}
+
+.module-cta {
+  margin-top: 0.5rem;
+}
+
+
 /* Cards & Grids */
 .features-grid, .action-grid, .stats-grid {
   display: grid;
