@@ -11,6 +11,7 @@ import Assessments from './pages/Assessments';
 import TakeAssessment from './pages/TakeAssessment';
 import AssessmentResult from './pages/AssessmentResult';
 import ResultsHistory from './pages/ResultsHistory';
+import InterviewPrep from './pages/InterviewPrep';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -38,6 +39,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/questions" element={<Questions />} />
               <Route path="/assessments" element={<Assessments />} />
+              <Route path="/interview" element={<InterviewPrep />} />
               <Route
                 path="/assessments/:id"
                 element={
