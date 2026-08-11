@@ -103,6 +103,15 @@ body {
   font-weight: 600;
 }
 
+.admin-link {
+  color: #fca5a5 !important;
+  font-weight: 700;
+}
+
+.admin-link:hover {
+  color: #ef4444 !important;
+}
+
 /* Buttons */
 .btn {
   display: inline-flex;

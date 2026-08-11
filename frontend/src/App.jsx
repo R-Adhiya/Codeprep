@@ -12,6 +12,7 @@ import TakeAssessment from './pages/TakeAssessment';
 import AssessmentResult from './pages/AssessmentResult';
 import ResultsHistory from './pages/ResultsHistory';
 import InterviewPrep from './pages/InterviewPrep';
+import AdminDashboard from './pages/AdminDashboard';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -23,6 +24,21 @@ const ProtectedRoute = ({ children }) => {
 
   if (!user) {
     return <Navigate to="/login" replace />;
+  }
+
+  return children;
+};
+
+// Admin Route Component (Role-Based Authorization)
+const AdminRoute = ({ children }) => {
+  const { user, loading } = useContext(AuthContext);
+
+  if (loading) {
+    return <div className="loading-spinner">Loading...</div>;
+  }
+
+  if (!user || user.role !== 'ADMIN') {
+    return <Navigate to="/dashboard" replace />;
   }
 
   return children;
@@ -62,6 +78,14 @@ function App() {
                   <ProtectedRoute>
                     <AssessmentResult />
                   </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin"
+                element={
+                  <AdminRoute>
+                    <AdminDashboard />
+                  </AdminRoute>
                 }
               />
               <Route path="/login" element={<Login />} />

@@ -16,11 +16,13 @@ const userRoutes = require('./routes/user.routes');
 const questionRoutes = require('./routes/question.routes');
 const assessmentRoutes = require('./routes/assessment.routes');
 const interviewRoutes = require('./routes/interview.routes');
+const adminRoutes = require('./routes/admin.routes');
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/questions', questionRoutes);
 app.use('/api/assessments', assessmentRoutes);
 app.use('/api/interview', interviewRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Health Check Endpoint
 app.get('/api/health', async (req, res) => {
