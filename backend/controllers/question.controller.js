@@ -56,7 +56,103 @@ const getQuestionById = async (req, res) => {
   }
 };
 
+// @desc    Create a new coding question
+// @route   POST /api/questions
+// @access  Private/Admin
+const createQuestion = async (req, res) => {
+  try {
+    const { title, description, difficulty, category, sample_input, sample_output, solution } = req.body;
+
+    if (!title || !description || !solution) {
+      return res.status(400).json({ message: 'Please provide title, description, and solution' });
+    }
+
+    const [result] = await dbPool.query(
+      `INSERT INTO coding_questions (title, description, difficulty, category, sample_input, sample_output, solution)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [
+        title.trim(),
+        description.trim(),
+        difficulty || 'Easy',
+        category || 'Arrays',
+        sample_input || '',
+        sample_output || '',
+        solution.trim()
+      ]
+    );
+
+    return res.status(201).json({
+      message: 'Coding question created successfully',
+      id: result.insertId
+    });
+
+  } catch (error) {
+    console.error('Error creating coding question:', error);
+    return res.status(500).json({ message: 'Server error creating coding question', error: error.message });
+  }
+};
+
+// @desc    Update an existing coding question
+// @route   PUT /api/questions/:id
+// @access  Private/Admin
+const updateQuestion = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, description, difficulty, category, sample_input, sample_output, solution } = req.body;
+
+    const [result] = await dbPool.query(
+      `UPDATE coding_questions 
+       SET title = ?, description = ?, difficulty = ?, category = ?, sample_input = ?, sample_output = ?, solution = ?
+       WHERE id = ?`,
+      [
+        title.trim(),
+        description.trim(),
+        difficulty,
+        category,
+        sample_input || '',
+        sample_output || '',
+        solution.trim(),
+        id
+      ]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Coding question not found' });
+    }
+
+    return res.status(200).json({ message: 'Coding question updated successfully' });
+
+  } catch (error) {
+    console.error('Error updating coding question:', error);
+    return res.status(500).json({ message: 'Server error updating coding question', error: error.message });
+  }
+};
+
+// @desc    Delete a coding question
+// @route   DELETE /api/questions/:id
+// @access  Private/Admin
+const deleteQuestion = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [result] = await dbPool.query('DELETE FROM coding_questions WHERE id = ?', [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Coding question not found' });
+    }
+
+    return res.status(200).json({ message: 'Coding question deleted successfully' });
+
+  } catch (error) {
+    console.error('Error deleting coding question:', error);
+    return res.status(500).json({ message: 'Server error deleting coding question', error: error.message });
+  }
+};
+
 module.exports = {
   getAllQuestions,
-  getQuestionById
+  getQuestionById,
+  createQuestion,
+  updateQuestion,
+  deleteQuestion
 };
+

@@ -13,6 +13,7 @@ import AssessmentResult from './pages/AssessmentResult';
 import ResultsHistory from './pages/ResultsHistory';
 import InterviewPrep from './pages/InterviewPrep';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminCodingQuestions from './pages/AdminCodingQuestions';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -85,6 +86,14 @@ function App() {
                 element={
                   <AdminRoute>
                     <AdminDashboard />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/admin/questions"
+                element={
+                  <AdminRoute>
+                    <AdminCodingQuestions />
                   </AdminRoute>
                 }
               />

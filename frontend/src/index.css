@@ -270,6 +270,41 @@ body {
   border-radius: 20px;
 }
 
+.font-semibold {
+  font-weight: 600;
+}
+
+.text-muted-cell {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.action-buttons-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.text-danger-btn {
+  color: #f87171 !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+.text-danger-btn:hover {
+  background-color: rgba(239, 68, 68, 0.15) !important;
+}
+
 .module-desc {
   color: var(--text-muted);
   font-size: 1rem;
