@@ -8,6 +8,7 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Questions from './pages/Questions';
 import Assessments from './pages/Assessments';
+import TakeAssessment from './pages/TakeAssessment';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -35,6 +36,14 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/questions" element={<Questions />} />
               <Route path="/assessments" element={<Assessments />} />
+              <Route
+                path="/assessments/:id"
+                element={
+                  <ProtectedRoute>
+                    <TakeAssessment />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route

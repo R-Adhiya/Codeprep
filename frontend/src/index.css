@@ -471,11 +471,196 @@ body {
   gap: 0.6rem;
 }
 
-.assessment-desc {
+/* Assessment Interface Workspace */
+.take-assessment-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.take-assessment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.2rem 1.8rem;
+}
+
+.take-assessment-header h1 {
+  font-size: 1.6rem;
+  margin-bottom: 0.2rem;
+}
+
+.question-counter-badge {
+  background-color: rgba(79, 70, 229, 0.15);
+  color: #818cf8;
+  border: 1px solid rgba(79, 70, 229, 0.3);
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+
+.question-nav-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0.8rem 1.2rem;
+}
+
+.nav-bar-label {
+  font-size: 0.9rem;
+  font-weight: 600;
   color: var(--text-muted);
+}
+
+.question-palette {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.palette-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.palette-btn:hover {
+  border-color: var(--primary-color);
+}
+
+.palette-btn.active {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.palette-btn.answered {
+  border-color: var(--success-color);
+  box-shadow: inset 0 0 0 1px var(--success-color);
+}
+
+.assessment-workspace {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  min-height: 500px;
+}
+
+@media (max-width: 900px) {
+  .assessment-workspace {
+    grid-template-columns: 1fr;
+  }
+}
+
+.question-panel, .answer-panel {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.question-panel-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+}
+
+.description-text {
+  color: #e2e8f0;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.sample-box {
+  background-color: #090d16;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+}
+
+.sample-box h4 {
+  font-size: 0.85rem;
+  color: var(--secondary-color);
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.sample-box pre {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9rem;
+  color: #cbd5e1;
+  white-space: pre-wrap;
+}
+
+.answer-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+}
+
+.editor-hint {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.code-editor-textarea {
+  flex: 1;
+  width: 100%;
+  min-height: 380px;
+  background-color: #090d16;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1rem;
+  color: #f1f5f9;
+  font-family: 'Fira Code', 'Courier New', monospace;
   font-size: 0.95rem;
   line-height: 1.5;
+  resize: vertical;
+  outline: none;
 }
+
+.code-editor-textarea:focus {
+  border-color: var(--primary-color);
+}
+
+.take-assessment-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem 1.8rem;
+}
+
+.right-controls {
+  display: flex;
+  gap: 1rem;
+}
+
 
 
 .question-short-desc {
