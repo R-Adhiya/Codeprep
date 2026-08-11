@@ -178,10 +178,53 @@ const getAttemptResult = async (req, res) => {
   }
 };
 
+// @desc    Get all previous assessment attempts for current logged in user
+// @route   GET /api/assessments/user/attempts
+// @access  Private
+const getUserAttempts = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const [attempts] = await dbPool.query(
+      `SELECT 
+        aa.id AS attempt_id,
+        aa.assessment_id,
+        a.title AS assessment_title,
+        aa.score,
+        aa.total_questions,
+        aa.started_at,
+        aa.completed_at
+       FROM assessment_attempts aa
+       JOIN assessments a ON aa.assessment_id = a.id
+       WHERE aa.user_id = ?
+       ORDER BY aa.completed_at DESC`,
+      [userId]
+    );
+
+    const formattedAttempts = attempts.map((att) => ({
+      attemptId: att.attempt_id,
+      assessmentId: att.assessment_id,
+      title: att.assessment_title,
+      score: att.score,
+      totalQuestions: att.total_questions,
+      percentage: Math.round((att.score / att.total_questions) * 100),
+      completedAt: att.completed_at
+    }));
+
+    return res.status(200).json(formattedAttempts);
+
+  } catch (error) {
+    console.error('Error fetching user attempts:', error);
+    return res.status(500).json({ message: 'Server error fetching assessment history', error: error.message });
+  }
+};
+
 module.exports = {
   getAllAssessments,
   getAssessmentById,
   submitAssessment,
-  getAttemptResult
+  getAttemptResult,
+  getUserAttempts
 };
+
 

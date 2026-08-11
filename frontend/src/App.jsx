@@ -10,6 +10,7 @@ import Questions from './pages/Questions';
 import Assessments from './pages/Assessments';
 import TakeAssessment from './pages/TakeAssessment';
 import AssessmentResult from './pages/AssessmentResult';
+import ResultsHistory from './pages/ResultsHistory';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -42,6 +43,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <TakeAssessment />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/results"
+                element={
+                  <ProtectedRoute>
+                    <ResultsHistory />
                   </ProtectedRoute>
                 }
               />

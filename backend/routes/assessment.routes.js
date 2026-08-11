@@ -4,12 +4,16 @@ const {
   getAllAssessments,
   getAssessmentById,
   submitAssessment,
-  getAttemptResult
+  getAttemptResult,
+  getUserAttempts
 } = require('../controllers/assessment.controller');
 const { protect } = require('../middleware/auth.middleware');
 
 // @route GET /api/assessments
 router.get('/', getAllAssessments);
+
+// @route GET /api/assessments/user/attempts
+router.get('/user/attempts', protect, getUserAttempts);
 
 // @route GET /api/assessments/attempts/:attemptId
 router.get('/attempts/:attemptId', protect, getAttemptResult);

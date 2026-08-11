@@ -596,9 +596,57 @@ body {
   gap: 1rem;
 }
 
-.result-actions button {
-  flex: 1;
+/* History Results Table */
+.history-table-container {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  overflow-x: auto;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
 }
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.history-table th {
+  background-color: rgba(15, 23, 42, 0.6);
+  padding: 1.2rem 1.5rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.history-table td {
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.95rem;
+  color: var(--text-main);
+  vertical-align: middle;
+}
+
+.history-table tr:last-child td {
+  border-bottom: none;
+}
+
+.history-table tr:hover td {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.text-muted-cell {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
 
 
 .header-badges {

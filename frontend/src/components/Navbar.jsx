@@ -25,6 +25,7 @@ const Navbar = () => {
           {user ? (
             <>
               <Link to="/dashboard" className="nav-item">Dashboard</Link>
+              <Link to="/results" className="nav-item">My Results</Link>
               {isAdmin && <span className="admin-badge">Admin</span>}
               <span className="nav-user">Hello, {user.name}</span>
               <button onClick={handleLogout} className="btn btn-outline">Logout</button>
