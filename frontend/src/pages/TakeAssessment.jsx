@@ -13,15 +13,42 @@ const TakeAssessment = () => {
   const [answers, setAnswers] = useState({});
   const [loading, setLoading] = useState(true);
 
+  // Timer State
+  const [timeLeft, setTimeLeft] = useState(0); // seconds
+  const [isTimeUp, setIsTimeUp] = useState(false);
+
   useEffect(() => {
     fetchAssessmentDetails();
   }, [id]);
+
+  // Countdown Timer Effect
+  useEffect(() => {
+    if (!assessment || timeLeft <= 0) return;
+
+    const timer = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 1) {
+          clearInterval(timer);
+          setIsTimeUp(true);
+          handleAutoSubmit();
+          return 0;
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [assessment, timeLeft]);
 
   const fetchAssessmentDetails = async () => {
     try {
       setLoading(true);
       const res = await API.get(`/assessments/${id}`);
       setAssessment(res.data);
+
+      // Initialize duration timer (duration in minutes)
+      const durationSeconds = (res.data.duration || 30) * 60;
+      setTimeLeft(durationSeconds);
 
       // Pre-fill empty initial answers
       const initialAnswers = {};
@@ -36,6 +63,29 @@ const TakeAssessment = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const handleAutoSubmit = () => {
+    alert('⏱️ Time is up! Your assessment is being submitted automatically.');
+    submitAssessment();
+  };
+
+  const handleManualSubmit = () => {
+    if (window.confirm('Are you sure you want to submit your assessment now?')) {
+      submitAssessment();
+    }
+  };
+
+  const submitAssessment = () => {
+    // Stage 14 will implement scoring API submission
+    console.log('Submitting assessment answers:', answers);
+    alert('Assessment submitted! Proceeding...');
   };
 
   const handleAnswerChange = (questionId, value) => {
@@ -76,8 +126,13 @@ const TakeAssessment = () => {
           <p className="subtitle">{assessment.description}</p>
         </div>
 
-        <div className="question-counter-badge">
-          Question {currentQuestionIndex + 1} of {assessment.questions.length}
+        <div className="header-badges">
+          <div className={`timer-badge ${timeLeft <= 300 ? 'timer-warning' : ''}`}>
+            ⏱️ {formatTime(timeLeft)}
+          </div>
+          <div className="question-counter-badge">
+            Question {currentQuestionIndex + 1} of {assessment.questions.length}
+          </div>
         </div>
       </header>
 
@@ -171,7 +226,7 @@ const TakeAssessment = () => {
           </button>
 
           <button
-            onClick={() => alert('Submit functionality will be integrated in scoring stage!')}
+            onClick={handleManualSubmit}
             className="btn btn-primary"
           >
             Submit Assessment

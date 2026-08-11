@@ -493,6 +493,35 @@ body {
   margin-bottom: 0.2rem;
 }
 
+.header-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.timer-badge {
+  background-color: rgba(14, 165, 233, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(14, 165, 233, 0.3);
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: 'Fira Code', monospace;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+
+.timer-warning {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.5);
+  animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+  from { opacity: 0.8; }
+  to { opacity: 1; }
+}
+
 .question-counter-badge {
   background-color: rgba(79, 70, 229, 0.15);
   color: #818cf8;
