@@ -13,8 +13,10 @@ app.use(express.json());
 // Routes
 const authRoutes = require('./routes/auth.routes');
 const userRoutes = require('./routes/user.routes');
+const questionRoutes = require('./routes/question.routes');
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/questions', questionRoutes);
 
 // Health Check Endpoint
 app.get('/api/health', async (req, res) => {
