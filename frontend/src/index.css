@@ -301,9 +301,55 @@ body {
   border-color: rgba(239, 68, 68, 0.3) !important;
 }
 
-.text-danger-btn:hover {
-  background-color: rgba(239, 68, 68, 0.15) !important;
+.question-selection-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 220px;
+  overflow-y: auto;
+  background-color: #090d16;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.6rem;
 }
+
+.question-select-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.6rem 0.8rem;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.question-select-item:hover {
+  border-color: var(--primary-color);
+}
+
+.question-select-item.selected {
+  background-color: rgba(79, 70, 229, 0.15);
+  border-color: var(--primary-color);
+}
+
+.select-item-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.select-item-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.select-item-meta {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
 
 .module-desc {
   color: var(--text-muted);

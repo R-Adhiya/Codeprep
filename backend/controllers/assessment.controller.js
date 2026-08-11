@@ -219,12 +219,110 @@ const getUserAttempts = async (req, res) => {
   }
 };
 
+// @desc    Create a new assessment with mapped coding questions
+// @route   POST /api/assessments
+// @access  Private/Admin
+const createAssessment = async (req, res) => {
+  try {
+    const { title, description, duration, questionIds = [] } = req.body;
+
+    if (!title || !description || !duration) {
+      return res.status(400).json({ message: 'Please provide title, description, and duration' });
+    }
+
+    const [result] = await dbPool.query(
+      'INSERT INTO assessments (title, description, duration) VALUES (?, ?, ?)',
+      [title.trim(), description.trim(), Number(duration)]
+    );
+
+    const assessmentId = result.insertId;
+
+    // Map questions to assessment
+    if (Array.isArray(questionIds) && questionIds.length > 0) {
+      const mappingValues = questionIds.map((qId) => [assessmentId, qId]);
+      await dbPool.query(
+        'INSERT INTO assessment_questions (assessment_id, question_id) VALUES ?',
+        [mappingValues]
+      );
+    }
+
+    return res.status(201).json({
+      message: 'Assessment created successfully',
+      id: assessmentId
+    });
+
+  } catch (error) {
+    console.error('Error creating assessment:', error);
+    return res.status(500).json({ message: 'Server error creating assessment', error: error.message });
+  }
+};
+
+// @desc    Update an existing assessment and mapped questions
+// @route   PUT /api/assessments/:id
+// @access  Private/Admin
+const updateAssessment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, description, duration, questionIds = [] } = req.body;
+
+    const [result] = await dbPool.query(
+      'UPDATE assessments SET title = ?, description = ?, duration = ? WHERE id = ?',
+      [title.trim(), description.trim(), Number(duration), id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Assessment not found' });
+    }
+
+    // Re-map question associations
+    await dbPool.query('DELETE FROM assessment_questions WHERE assessment_id = ?', [id]);
+
+    if (Array.isArray(questionIds) && questionIds.length > 0) {
+      const mappingValues = questionIds.map((qId) => [id, qId]);
+      await dbPool.query(
+        'INSERT INTO assessment_questions (assessment_id, question_id) VALUES ?',
+        [mappingValues]
+      );
+    }
+
+    return res.status(200).json({ message: 'Assessment updated successfully' });
+
+  } catch (error) {
+    console.error('Error updating assessment:', error);
+    return res.status(500).json({ message: 'Server error updating assessment', error: error.message });
+  }
+};
+
+// @desc    Delete an assessment
+// @route   DELETE /api/assessments/:id
+// @access  Private/Admin
+const deleteAssessment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [result] = await dbPool.query('DELETE FROM assessments WHERE id = ?', [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Assessment not found' });
+    }
+
+    return res.status(200).json({ message: 'Assessment deleted successfully' });
+
+  } catch (error) {
+    console.error('Error deleting assessment:', error);
+    return res.status(500).json({ message: 'Server error deleting assessment', error: error.message });
+  }
+};
+
 module.exports = {
   getAllAssessments,
   getAssessmentById,
   submitAssessment,
   getAttemptResult,
-  getUserAttempts
+  getUserAttempts,
+  createAssessment,
+  updateAssessment,
+  deleteAssessment
 };
+
 
 

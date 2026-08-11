@@ -5,9 +5,12 @@ const {
   getAssessmentById,
   submitAssessment,
   getAttemptResult,
-  getUserAttempts
+  getUserAttempts,
+  createAssessment,
+  updateAssessment,
+  deleteAssessment
 } = require('../controllers/assessment.controller');
-const { protect } = require('../middleware/auth.middleware');
+const { protect, adminOnly } = require('../middleware/auth.middleware');
 
 // @route GET /api/assessments
 router.get('/', getAllAssessments);
@@ -21,8 +24,16 @@ router.get('/attempts/:attemptId', protect, getAttemptResult);
 // @route GET /api/assessments/:id
 router.get('/:id', getAssessmentById);
 
+// @route POST /api/assessments (Admin Only)
+router.post('/', protect, adminOnly, createAssessment);
+
+// @route PUT /api/assessments/:id (Admin Only)
+router.put('/:id', protect, adminOnly, updateAssessment);
+
+// @route DELETE /api/assessments/:id (Admin Only)
+router.delete('/:id', protect, adminOnly, deleteAssessment);
+
 // @route POST /api/assessments/:id/submit
 router.post('/:id/submit', protect, submitAssessment);
 
 module.exports = router;
-
