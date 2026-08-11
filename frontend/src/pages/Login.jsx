@@ -68,6 +68,26 @@ const Login = () => {
           </button>
         </form>
 
+        <div className="demo-credentials">
+          <p className="demo-title">💡 Demo Credentials for Evaluation:</p>
+          <div className="demo-buttons">
+            <button
+              type="button"
+              className="btn btn-outline btn-sm"
+              onClick={() => setFormData({ email: 'user@codeprep.com', password: 'user123' })}
+            >
+              Fill Student Demo
+            </button>
+            <button
+              type="button"
+              className="btn btn-outline btn-sm"
+              onClick={() => setFormData({ email: 'admin@codeprep.com', password: 'admin123' })}
+            >
+              Fill Admin Demo
+            </button>
+          </div>
+        </div>
+
         <p className="auth-footer">
           Don't have an account? <Link to="/register">Create an account</Link>
         </p>
