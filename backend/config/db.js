@@ -16,11 +16,15 @@ const mysqlPool = mysql.createPool({
 
 let isMysqlOnline = false;
 
-// In-Memory Fallback Store (Used when MySQL service is stopped on host)
+// Verified bcrypt hashes for 'admin123' and 'user123'
+const HASH_ADMIN123 = '$2a$10$Book0iA3X13rGp122imM/efBPF4FFeHVhZqDkrBZc2ymRx1xaEk9m';
+const HASH_USER123  = '$2a$10$RthjoohUiV2qIsslPhCwFOBXLT8GjIe/hOTXP4EDkU0y7ErfBYuU6';
+
+// In-Memory Data Store (Provides seamless fallback when MySQL is stopped on host)
 const memoryStore = {
   users: [
-    { id: 1, name: 'Admin User', email: 'admin@codeprep.com', password: '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW', role: 'ADMIN', created_at: new Date() },
-    { id: 2, name: 'Student User', email: 'user@codeprep.com', password: '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW', role: 'USER', created_at: new Date() }
+    { id: 1, name: 'Admin User', email: 'admin@codeprep.com', password: HASH_ADMIN123, role: 'ADMIN', streak_count: 7, last_active: new Date(), created_at: new Date() },
+    { id: 2, name: 'Student User', email: 'user@codeprep.com', password: HASH_USER123, role: 'USER', streak_count: 5, last_active: new Date(), created_at: new Date() }
   ],
   coding_questions: [
     { id: 1, title: 'Two Sum', description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.', difficulty: 'Easy', category: 'Arrays', sample_input: 'nums = [2,7,11,15], target = 9', sample_output: '[0,1]', solution: 'function twoSum(nums, target) {\n  const map = new Map();\n  for (let i = 0; i < nums.length; i++) {\n    const diff = target - nums[i];\n    if (map.has(diff)) return [map.get(diff), i];\n    map.set(nums[i], i);\n  }\n  return [];\n}', created_at: new Date() },
@@ -32,7 +36,17 @@ const memoryStore = {
     { id: 7, title: 'Detect Loop in Linked List', description: 'Given head of a linked list, determine if the linked list has a cycle in it.', difficulty: 'Medium', category: 'Data Structures', sample_input: 'head = [3,2,0,-4], pos = 1', sample_output: 'true', solution: 'function hasCycle(head) {\n  let slow = head, fast = head;\n  while (fast && fast.next) {\n    slow = slow.next;\n    fast = fast.next.next;\n    if (slow === fast) return true;\n  }\n  return false;\n}', created_at: new Date() },
     { id: 8, title: 'Palindrome Check', description: 'Determine whether an integer or string reads the same backward as forward.', difficulty: 'Easy', category: 'Strings', sample_input: 's = "racecar"', sample_output: 'true', solution: 'function isPalindrome(s) {\n  const cleaned = s.toLowerCase().replace(/[^a-z0-9]/g, "");\n  return cleaned === cleaned.split("").reverse().join("");\n}', created_at: new Date() },
     { id: 9, title: 'Find Missing Number', description: 'Given an array nums containing n distinct numbers in range [0, n], return the number missing.', difficulty: 'Easy', category: 'Arrays', sample_input: 'nums = [3,0,1]', sample_output: '2', solution: 'function missingNumber(nums) {\n  const n = nums.length;\n  const expectedSum = (n * (n + 1)) / 2;\n  const actualSum = nums.reduce((acc, curr) => acc + curr, 0);\n  return expectedSum - actualSum;\n}', created_at: new Date() },
-    { id: 10, title: 'Longest Substring Without Repeating Characters', description: 'Find the length of the longest substring without repeating characters.', difficulty: 'Hard', category: 'Strings', sample_input: 's = "abcabcbb"', sample_output: '3', solution: 'function lengthOfLongestSubstring(s) {\n  let set = new Set(), maxLen = 0, left = 0;\n  for (let right = 0; right < s.length; right++) {\n    while (set.has(s[right])) {\n      set.delete(s[left]);\n      left++;\n    }\n    set.add(s[right]);\n    maxLen = Math.max(maxLen, right - left + 1);\n  }\n  return maxLen;\n}', created_at: new Date() }
+    { id: 10, title: 'Longest Substring Without Repeating Characters', description: 'Find the length of the longest substring without repeating characters.', difficulty: 'Hard', category: 'Strings', sample_input: 's = "abcabcbb"', sample_output: '3', solution: 'function lengthOfLongestSubstring(s) {\n  let set = new Set(), maxLen = 0, left = 0;\n  for (let right = 0; right < s.length; right++) {\n    while (set.has(s[right])) {\n      set.delete(s[left]);\n      left++;\n    }\n    set.add(s[right]);\n    maxLen = Math.max(maxLen, right - left + 1);\n  }\n  return maxLen;\n}', created_at: new Date() },
+    { id: 11, title: 'Climbing Stairs', description: 'You are climbing a staircase. It takes n steps to reach the top. How many distinct ways can you climb to the top?', difficulty: 'Easy', category: 'Algorithms', sample_input: 'n = 3', sample_output: '3', solution: 'function climbStairs(n) {\n  if (n <= 2) return n;\n  let first = 1, second = 2;\n  for (let i = 3; i <= n; i++) {\n    let third = first + second;\n    first = second;\n    second = third;\n  }\n  return second;\n}', created_at: new Date() },
+    { id: 12, title: 'Container With Most Water', description: 'Given n non-negative integers height, find two lines that together with x-axis form a container holding most water.', difficulty: 'Medium', category: 'Arrays', sample_input: 'height = [1,8,6,2,5,4,8,3,7]', sample_output: '49', solution: 'function maxArea(height) {\n  let left = 0, right = height.length - 1, max = 0;\n  while (left < right) {\n    let area = Math.min(height[left], height[right]) * (right - left);\n    max = Math.max(max, area);\n    if (height[left] < height[right]) left++; else right--;\n  }\n  return max;\n}', created_at: new Date() },
+    { id: 13, title: 'Implement Queue using Stacks', description: 'Implement a first in first out (FIFO) queue using only two stacks.', difficulty: 'Easy', category: 'Data Structures', sample_input: 'push(1), push(2), pop()', sample_output: '1', solution: 'class MyQueue {\n  constructor() { this.s1 = []; this.s2 = []; }\n  push(x) { this.s1.push(x); }\n  pop() {\n    if (!this.s2.length) while(this.s1.length) this.s2.push(this.s1.pop());\n    return this.s2.pop();\n  }\n}', created_at: new Date() },
+    { id: 14, title: 'Lowest Common Ancestor in BST', description: 'Given a Binary Search Tree and two nodes, find their lowest common ancestor (LCA).', difficulty: 'Medium', category: 'Data Structures', sample_input: 'root = [6,2,8,0,4,7,9], p = 2, q = 8', sample_output: '6', solution: 'function lowestCommonAncestor(root, p, q) {\n  while (root) {\n    if (p.val < root.val && q.val < root.val) root = root.left;\n    else if (p.val > root.val && q.val > root.val) root = root.right;\n    else return root;\n  }\n}', created_at: new Date() },
+    { id: 15, title: 'Group Anagrams', description: 'Given an array of strings, group the anagrams together.', difficulty: 'Medium', category: 'Strings', sample_input: 'strs = ["eat","tea","tan","ate","nat","bat"]', sample_output: '[["bat"],["nat","tan"],["ate","eat","tea"]]', solution: 'function groupAnagrams(strs) {\n  const map = {};\n  for (let s of strs) {\n    const key = s.split("").sort().join("");\n    if (!map[key]) map[key] = [];\n    map[key].push(s);\n  }\n  return Object.values(map);\n}', created_at: new Date() },
+    { id: 16, title: 'Top K Frequent Elements', description: 'Given an integer array nums and an integer k, return the k most frequent elements.', difficulty: 'Medium', category: 'Sorting', sample_input: 'nums = [1,1,1,2,2,3], k = 2', sample_output: '[1,2]', solution: 'function topKFrequent(nums, k) {\n  const map = {};\n  nums.forEach(n => map[n] = (map[n] || 0) + 1);\n  return Object.keys(map).sort((a,b) => map[b] - map[a]).slice(0, k).map(Number);\n}', created_at: new Date() },
+    { id: 17, title: 'Trapping Rain Water', description: 'Given n non-negative integers representing an elevation map, compute how much water it can trap after raining.', difficulty: 'Hard', category: 'Algorithms', sample_input: 'height = [0,1,0,2,1,0,1,3,2,1,2,1]', sample_output: '6', solution: 'function trap(height) {\n  let left = 0, right = height.length - 1, maxL = 0, maxR = 0, res = 0;\n  while (left < right) {\n    if (height[left] < height[right]) {\n      if (height[left] >= maxL) maxL = height[left];\n      else res += maxL - height[left];\n      left++;\n    } else {\n      if (height[right] >= maxR) maxR = height[right];\n      else res += maxR - height[right];\n      right--;\n    }\n  }\n  return res;\n}', created_at: new Date() },
+    { id: 18, title: 'Kth Largest Element in an Array', description: 'Find the kth largest element in an unsorted array.', difficulty: 'Medium', category: 'Searching', sample_input: 'nums = [3,2,1,5,6,4], k = 2', sample_output: '5', solution: 'function findKthLargest(nums, k) {\n  nums.sort((a, b) => b - a);\n  return nums[k - 1];\n}', created_at: new Date() },
+    { id: 19, title: 'Number of Islands', description: 'Given an m x n 2D binary grid, count the number of islands.', difficulty: 'Medium', category: 'Algorithms', sample_input: 'grid = [["1","1","0"],["1","1","0"],["0","0","1"]]', sample_output: '2', solution: 'function numIslands(grid) {\n  if (!grid.length) return 0;\n  let count = 0;\n  for (let r = 0; r < grid.length; r++) {\n    for (let c = 0; c < grid[0].length; c++) {\n      if (grid[r][c] === "1") {\n        count++;\n        dfs(grid, r, c);\n      }\n    }\n  }\n  return count;\n}\nfunction dfs(grid, r, c) {\n  if (r<0||c<0||r>=grid.length||c>=grid[0].length||grid[r][c]==="0") return;\n  grid[r][c] = "0";\n  dfs(grid, r+1, c); dfs(grid, r-1, c); dfs(grid, r, c+1); dfs(grid, r, c-1);\n}', created_at: new Date() },
+    { id: 20, title: 'Coin Change', description: 'Given coins of different denominations and total amount, compute fewest number of coins to make up that amount.', difficulty: 'Medium', category: 'Algorithms', sample_input: 'coins = [1,2,5], amount = 11', sample_output: '3', solution: 'function coinChange(coins, amount) {\n  const dp = new Array(amount + 1).fill(Infinity);\n  dp[0] = 0;\n  for (let i = 1; i <= amount; i++) {\n    for (let coin of coins) {\n      if (i - coin >= 0) dp[i] = Math.min(dp[i], dp[i - coin] + 1);\n    }\n  }\n  return dp[amount] === Infinity ? -1 : dp[amount];\n}', created_at: new Date() }
   ],
   interview_questions: [
     { id: 1, question: 'What is the difference between a process and a thread?', answer: 'A process is an independent executing program with its own memory space allocated by the OS. A thread is a lightweight execution path within a process. Threads of the same process share memory space and resources.', category: 'Technical', difficulty: 'Easy', created_at: new Date() },
@@ -49,12 +63,20 @@ const memoryStore = {
     { id: 12, question: 'Why do you want to join our organization?', answer: 'Show research about the company, mention specific products/culture that excite you, and connect them with your passion for growth and contributing value.', category: 'HR', difficulty: 'Easy', created_at: new Date() },
     { id: 13, question: 'Where do you see yourself in five years?', answer: 'Demonstrate ambition and realistic growth. Mention mastering technical domain knowledge, taking leadership responsibilities, and adding value to projects.', category: 'HR', difficulty: 'Easy', created_at: new Date() },
     { id: 14, question: 'Describe a challenging project situation and how you handled it.', answer: 'Use the STAR method:\n- Situation: Context of the problem.\n- Task: What needed to be done.\n- Action: Steps YOU took to resolve it.\n- Result: Quantifiable or positive outcome achieved.', category: 'HR', difficulty: 'Medium', created_at: new Date() },
-    { id: 15, question: 'Why should we hire you over other candidates?', answer: 'Highlight the combination of your technical foundation, problem-solving mindset, fast learning ability, and dedication to delivering quality solutions.', category: 'HR', difficulty: 'Easy', created_at: new Date() }
+    { id: 15, question: 'Why should we hire you over other candidates?', answer: 'Highlight the combination of your technical foundation, problem-solving mindset, fast learning ability, and dedication to delivering quality solutions.', category: 'HR', difficulty: 'Easy', created_at: new Date() },
+    { id: 16, question: 'What is the Virtual DOM in React and how does reconciliation work?', answer: 'Virtual DOM is a lightweight copy of real DOM in memory. When state changes, React compares Virtual DOM with previous state (diffing algorithm) and updates only changed elements in real DOM efficiently.', category: 'Technical', difficulty: 'Medium', created_at: new Date() },
+    { id: 17, question: 'Explain Normalization vs Denormalization in SQL databases.', answer: 'Normalization reduces data redundancy by dividing tables and creating relationships (1NF, 2NF, 3NF). Denormalization intentionally adds redundant data to improve read query speed in data warehouses.', category: 'Technical', difficulty: 'Medium', created_at: new Date() },
+    { id: 18, question: 'What is CORS (Cross-Origin Resource Sharing)?', answer: 'CORS is an HTTP-header based security mechanism that allows a server to indicate any origins (domain, scheme, or port) other than its own from which a browser should permit loading resources.', category: 'Technical', difficulty: 'Easy', created_at: new Date() },
+    { id: 19, question: 'Explain Deadlock conditions in Operating Systems.', answer: 'A deadlock occurs when processes are unable to proceed because each is waiting for resources held by another. Four Coffman conditions: Mutual Exclusion, Hold & Wait, No Preemption, Circular Wait.', category: 'Technical', difficulty: 'Hard', created_at: new Date() },
+    { id: 20, question: 'What is the difference between SQL and NoSQL databases?', answer: 'SQL (Relational): Structured schemas, tables, ACID compliant, scales vertically (e.g. MySQL, PostgreSQL). NoSQL (Non-Relational): Dynamic schemas, JSON/key-value/document based, scales horizontally (e.g. MongoDB, Cassandra).', category: 'Technical', difficulty: 'Easy', created_at: new Date() },
+    { id: 21, question: 'How do you handle conflict or disagreement within a project team?', answer: 'Listen actively to understand the root cause, focus on project goals rather than personal opinions, evaluate alternatives objectively with data, and find a collaborative compromise.', category: 'HR', difficulty: 'Medium', created_at: new Date() },
+    { id: 22, question: 'What is your expected salary and career trajectory?', answer: 'State that you seek a competitive salary aligned with industry standards for your skill level, while prioritizing learning opportunities and technical growth.', category: 'HR', difficulty: 'Easy', created_at: new Date() }
   ],
   assessments: [
     { id: 1, title: 'Data Structures & Algorithms Basics', description: 'Test your fundamental knowledge of Arrays, Strings, Searching, and Basic Data Structures.', duration: 30, created_at: new Date() },
     { id: 2, title: 'Intermediate Problem Solving', description: 'Challenge your understanding of Sorting, Subarrays, Linked Lists, and Algorithm Optimization.', duration: 45, created_at: new Date() },
-    { id: 3, title: 'Full Stack Technical Assessment', description: 'Comprehensive coding assessment evaluating algorithmic efficiency and problem-solving abilities.', duration: 60, created_at: new Date() }
+    { id: 3, title: 'Full Stack Technical Assessment', description: 'Comprehensive coding assessment evaluating algorithmic efficiency and problem-solving abilities.', duration: 60, created_at: new Date() },
+    { id: 4, title: 'Advanced Algorithmic Challenge', description: 'Test advanced Dynamic Programming, Graphs, and Complex Data Structure optimization.', duration: 60, created_at: new Date() }
   ],
   assessment_questions: [
     { id: 1, assessment_id: 1, question_id: 1 },
@@ -69,7 +91,10 @@ const memoryStore = {
     { id: 10, assessment_id: 3, question_id: 4 },
     { id: 11, assessment_id: 3, question_id: 6 },
     { id: 12, assessment_id: 3, question_id: 7 },
-    { id: 13, assessment_id: 3, question_id: 10 }
+    { id: 13, assessment_id: 3, question_id: 10 },
+    { id: 14, assessment_id: 4, question_id: 17 },
+    { id: 15, assessment_id: 4, question_id: 19 },
+    { id: 16, assessment_id: 4, question_id: 20 }
   ],
   assessment_attempts: []
 };
@@ -105,7 +130,7 @@ const executeFallbackQuery = (sql, params = []) => {
   }
   if (sqlLower.includes('insert into users')) {
     const newId = memoryStore.users.length + 1;
-    const newUser = { id: newId, name: params[0], email: params[1], password: params[2], role: params[3] || 'USER', created_at: new Date() };
+    const newUser = { id: newId, name: params[0], email: params[1], password: params[2], role: params[3] || 'USER', streak_count: 1, last_active: new Date(), created_at: new Date() };
     memoryStore.users.push(newUser);
     return [{ insertId: newId, affectedRows: 1 }, []];
   }
@@ -113,6 +138,7 @@ const executeFallbackQuery = (sql, params = []) => {
   // 3. USER STATS / ATTEMPTS
   if (sqlLower.includes('select count(*) as assessmentstaken')) {
     const userId = params[0];
+    const user = memoryStore.users.find(u => u.id == userId) || { streak_count: 5 };
     const userAttempts = memoryStore.assessment_attempts.filter(a => a.user_id == userId);
     const count = userAttempts.length;
     let avg = 0, best = 0;
@@ -121,7 +147,7 @@ const executeFallbackQuery = (sql, params = []) => {
       avg = pcts.reduce((sum, p) => sum + p, 0) / count;
       best = Math.max(...pcts);
     }
-    return [[{ assessmentsTaken: count, averageScore: avg, bestScore: best }], []];
+    return [[{ assessmentsTaken: count, averageScore: avg, bestScore: best, streakCount: user.streak_count || 5 }], []];
   }
 
   // 4. CODING QUESTIONS

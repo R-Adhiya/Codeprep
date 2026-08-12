@@ -13,9 +13,9 @@ TRUNCATE TABLE users;
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- 1. Insert Users (Password is 'admin123' and 'user123' hashed with bcrypt)
-INSERT INTO users (id, name, email, password, role) VALUES
-(1, 'Admin User', 'admin@codeprep.com', '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW', 'ADMIN'),
-(2, 'Student User', 'user@codeprep.com', '$2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW', 'USER');
+INSERT INTO users (name, email, password, role) VALUES
+('Admin User', 'admin@codeprep.com', '$2a$10$Book0iA3X13rGp122imM/efBPF4FFeHVhZqDkrBZc2ymRx1xaEk9m', 'ADMIN'),
+('Student User', 'user@codeprep.com', '$2a$10$RthjoohUiV2qIsslPhCwFOBXLT8GjIe/hOTXP4EDkU0y7ErfBYuU6', 'USER');
 
 -- 2. Insert 10 Coding Questions
 INSERT INTO coding_questions (id, title, description, difficulty, category, sample_input, sample_output, solution) VALUES

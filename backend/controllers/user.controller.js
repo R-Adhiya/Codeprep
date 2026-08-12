@@ -18,12 +18,13 @@ const getUserStats = async (req, res) => {
       [userId]
     );
 
-    const stats = rows[0] || { assessmentsTaken: 0, averageScore: 0, bestScore: 0 };
+    const stats = rows[0] || { assessmentsTaken: 0, averageScore: 0, bestScore: 0, streakCount: 5 };
 
     return res.status(200).json({
-      assessmentsTaken: Number(stats.assessmentsTaken) || 0,
-      averageScore: Math.round(Number(stats.averageScore) || 0),
-      bestScore: Math.round(Number(stats.bestScore) || 0)
+      assessmentsTaken: Number(stats.assessmentsTaken || 0),
+      averageScore: Math.round(Number(stats.averageScore || 0)),
+      bestScore: Math.round(Number(stats.bestScore || 0)),
+      streakCount: Number(stats.streakCount || 5)
     });
 
   } catch (error) {

@@ -13,6 +13,7 @@ import TakeAssessment from './pages/TakeAssessment';
 import AssessmentResult from './pages/AssessmentResult';
 import ResultsHistory from './pages/ResultsHistory';
 import InterviewPrep from './pages/InterviewPrep';
+import Roadmaps from './pages/Roadmaps';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminCodingQuestions from './pages/AdminCodingQuestions';
 import AdminInterviewQuestions from './pages/AdminInterviewQuestions';
@@ -60,6 +61,7 @@ function App() {
               <Route path="/questions" element={<Questions />} />
               <Route path="/assessments" element={<Assessments />} />
               <Route path="/interview" element={<InterviewPrep />} />
+              <Route path="/roadmaps" element={<Roadmaps />} />
               <Route
                 path="/assessments/:id"
                 element={

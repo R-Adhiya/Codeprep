@@ -37,6 +37,7 @@ const Navbar = () => {
           <Link to="/questions" className="nav-item" onClick={closeMobileMenu}>Questions</Link>
           <Link to="/assessments" className="nav-item" onClick={closeMobileMenu}>Assessments</Link>
           <Link to="/interview" className="nav-item" onClick={closeMobileMenu}>Interview Prep</Link>
+          <Link to="/roadmaps" className="nav-item" onClick={closeMobileMenu}>Roadmaps</Link>
           {user ? (
             <>
               <Link to="/dashboard" className="nav-item" onClick={closeMobileMenu}>Dashboard</Link>
