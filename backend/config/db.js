@@ -250,16 +250,16 @@ const executeFallbackQuery = (sql, params = []) => {
 
   // 6. ASSESSMENTS
   if (sqlLower.includes('from assessments') || sqlLower.includes('from assessment_questions')) {
-    if (sqlLower.includes('select a.id, a.title, a.description, a.duration')) {
+    if (sqlLower.includes('select * from assessments where id = ?')) {
+      const a = memoryStore.assessments.find(item => item.id == params[0]);
+      return [a ? [a] : [], []];
+    }
+    if (sqlLower.includes('from assessments a') || sqlLower.includes('select a.id')) {
       const res = memoryStore.assessments.map(a => {
         const count = memoryStore.assessment_questions.filter(aq => aq.assessment_id == a.id).length;
         return { ...a, total_questions: count };
       });
       return [res, []];
-    }
-    if (sqlLower.includes('select * from assessments where id = ?')) {
-      const a = memoryStore.assessments.find(item => item.id == params[0]);
-      return [a ? [a] : [], []];
     }
     if (sqlLower.includes('select q.id, q.title, q.description, q.difficulty, q.category, q.sample_input, q.sample_output')) {
       const assessmentId = params[0];
