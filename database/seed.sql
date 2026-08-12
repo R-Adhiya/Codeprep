@@ -71,21 +71,22 @@ INSERT INTO interview_questions (id, question, answer, category, difficulty) VAL
 
 (15, 'Why should we hire you over other candidates?', 'Highlight the combination of your technical foundation, problem-solving mindset, fast learning ability, and dedication to delivering quality solutions.', 'HR', 'Easy');
 
--- 4. Insert 3 Assessments
+-- 4. Insert Assessments
 INSERT INTO assessments (id, title, description, duration) VALUES
 (1, 'Data Structures & Algorithms Basics', 'Test your fundamental knowledge of Arrays, Strings, Searching, and Basic Data Structures.', 30),
 (2, 'Intermediate Problem Solving', 'Challenge your understanding of Sorting, Subarrays, Linked Lists, and Algorithm Optimization.', 45),
-(3, 'Full Stack Technical Assessment', 'Comprehensive coding assessment evaluating algorithmic efficiency and problem-solving abilities.', 60);
+(3, 'Full Stack Technical Assessment', 'Comprehensive coding assessment evaluating algorithmic efficiency and problem-solving abilities.', 60),
+(4, 'Advanced Algorithmic Challenge', 'Test advanced Dynamic Programming, Graphs, and Complex Data Structure optimization.', 60),
+(5, 'SQL & Database Querying Exam', 'Evaluate your knowledge of relational database schema design, indexing, and complex queries.', 40),
+(6, 'Frontend React & JS Architecture', 'Assess modern JavaScript ES6+, asynchronous programming, and React state management.', 45),
+(7, 'OOP & System Design Fundamentals', 'Test Object-Oriented Principles, design patterns, clean code practices, and scalability.', 35);
 
--- 5. Map Questions to Assessments
--- Assessment 1: 4 Questions
+-- 5. Insert Assessment Questions Mapping
 INSERT INTO assessment_questions (assessment_id, question_id) VALUES
-(1, 1), (1, 2), (1, 3), (1, 5);
-
--- Assessment 2: 4 Questions
-INSERT INTO assessment_questions (assessment_id, question_id) VALUES
-(2, 4), (2, 6), (2, 7), (2, 9);
-
--- Assessment 3: 5 Questions
-INSERT INTO assessment_questions (assessment_id, question_id) VALUES
-(3, 1), (3, 4), (3, 6), (3, 7), (3, 10);
+(1, 1), (1, 2), (1, 3), (1, 5),
+(2, 4), (2, 6), (2, 7), (2, 9),
+(3, 1), (3, 4), (3, 6), (3, 7), (3, 10),
+(4, 17), (4, 19), (4, 20),
+(5, 1), (5, 9), (5, 12),
+(6, 2), (6, 5), (6, 8), (6, 10),
+(7, 3), (7, 13), (7, 14);

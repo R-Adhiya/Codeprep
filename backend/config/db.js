@@ -76,7 +76,10 @@ const memoryStore = {
     { id: 1, title: 'Data Structures & Algorithms Basics', description: 'Test your fundamental knowledge of Arrays, Strings, Searching, and Basic Data Structures.', duration: 30, created_at: new Date() },
     { id: 2, title: 'Intermediate Problem Solving', description: 'Challenge your understanding of Sorting, Subarrays, Linked Lists, and Algorithm Optimization.', duration: 45, created_at: new Date() },
     { id: 3, title: 'Full Stack Technical Assessment', description: 'Comprehensive coding assessment evaluating algorithmic efficiency and problem-solving abilities.', duration: 60, created_at: new Date() },
-    { id: 4, title: 'Advanced Algorithmic Challenge', description: 'Test advanced Dynamic Programming, Graphs, and Complex Data Structure optimization.', duration: 60, created_at: new Date() }
+    { id: 4, title: 'Advanced Algorithmic Challenge', description: 'Test advanced Dynamic Programming, Graphs, and Complex Data Structure optimization.', duration: 60, created_at: new Date() },
+    { id: 5, title: 'SQL & Database Querying Exam', description: 'Evaluate your knowledge of relational database schema design, indexing, and complex queries.', duration: 40, created_at: new Date() },
+    { id: 6, title: 'Frontend React & JS Architecture', description: 'Assess modern JavaScript ES6+, asynchronous programming, and React state management.', duration: 45, created_at: new Date() },
+    { id: 7, title: 'OOP & System Design Fundamentals', description: 'Test Object-Oriented Principles, design patterns, clean code practices, and scalability.', duration: 35, created_at: new Date() }
   ],
   assessment_questions: [
     { id: 1, assessment_id: 1, question_id: 1 },
@@ -94,7 +97,17 @@ const memoryStore = {
     { id: 13, assessment_id: 3, question_id: 10 },
     { id: 14, assessment_id: 4, question_id: 17 },
     { id: 15, assessment_id: 4, question_id: 19 },
-    { id: 16, assessment_id: 4, question_id: 20 }
+    { id: 16, assessment_id: 4, question_id: 20 },
+    { id: 17, assessment_id: 5, question_id: 1 },
+    { id: 18, assessment_id: 5, question_id: 9 },
+    { id: 19, assessment_id: 5, question_id: 12 },
+    { id: 20, assessment_id: 6, question_id: 2 },
+    { id: 21, assessment_id: 6, question_id: 5 },
+    { id: 22, assessment_id: 6, question_id: 8 },
+    { id: 23, assessment_id: 6, question_id: 10 },
+    { id: 24, assessment_id: 7, question_id: 3 },
+    { id: 25, assessment_id: 7, question_id: 13 },
+    { id: 26, assessment_id: 7, question_id: 14 }
   ],
   assessment_attempts: []
 };
