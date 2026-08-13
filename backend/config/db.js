@@ -280,7 +280,7 @@ const executeFallbackQuery = (sql, params = []) => {
       });
       return [res, []];
     }
-    if (sqlLower.includes('select q.id, q.title, q.description, q.difficulty, q.category, q.sample_input, q.sample_output')) {
+    if (sqlLower.includes('join assessment_questions') || sqlLower.includes('select q.id')) {
       const assessmentId = params[0];
       const mappedQIds = memoryStore.assessment_questions.filter(aq => aq.assessment_id == assessmentId).map(aq => aq.question_id);
       const questions = memoryStore.coding_questions.filter(q => mappedQIds.includes(q.id));
