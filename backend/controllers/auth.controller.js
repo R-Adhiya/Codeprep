@@ -40,9 +40,18 @@ const registerUser = async (req, res) => {
       [name.trim(), normalizedEmail, hashedPassword, 'USER']
     );
 
-    // 5. Response
+    // 5. Generate JWT Token for immediate seamless login
+    const jwt = require('jsonwebtoken');
+    const secret = process.env.JWT_SECRET || 'codeprep_super_secret_jwt_key_2026';
+    const token = jwt.sign(
+      { id: result.insertId, name: name.trim(), email: normalizedEmail, role: 'USER' },
+      secret,
+      { expiresIn: '1d' }
+    );
+
     return res.status(201).json({
       message: 'User registered successfully',
+      token,
       user: {
         id: result.insertId,
         name: name.trim(),

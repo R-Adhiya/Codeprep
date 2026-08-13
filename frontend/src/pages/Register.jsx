@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import API from '../services/api';
 
 const Register = () => {
@@ -7,6 +8,7 @@ const Register = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -25,15 +27,18 @@ const Register = () => {
     setLoading(true);
 
     try {
-      await API.post('/auth/register', {
+      const res = await API.post('/auth/register', {
         name: formData.name,
         email: formData.email,
         password: formData.password
       });
-      setSuccess('Account created successfully! Redirecting to login...');
+      setSuccess('Account created successfully! Logging you in...');
+      if (res.data && res.data.user && res.data.token) {
+        login(res.data.user, res.data.token);
+      }
       setTimeout(() => {
-        navigate('/login');
-      }, 1500);
+        navigate('/dashboard');
+      }, 1000);
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed. Please try again.');
     } finally {
