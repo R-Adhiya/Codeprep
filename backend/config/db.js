@@ -331,7 +331,7 @@ const executeFallbackQuery = (sql, params = []) => {
   }
 
   // 7. ASSESSMENT ATTEMPTS
-  if (sqlLower.includes('from assessment_attempts')) {
+  if (sqlLower.includes('assessment_attempts')) {
     if (sqlLower.includes('insert into assessment_attempts')) {
       const newId = memoryStore.assessment_attempts.length + 1;
       const newAttempt = {
