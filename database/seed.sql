@@ -81,12 +81,12 @@ INSERT INTO assessments (id, title, description, duration) VALUES
 (6, 'Frontend React & JS Architecture', 'Assess modern JavaScript ES6+, asynchronous programming, and React state management.', 45),
 (7, 'OOP & System Design Fundamentals', 'Test Object-Oriented Principles, design patterns, clean code practices, and scalability.', 35);
 
--- 5. Insert Assessment Questions Mapping
+-- 5. Insert Assessment Questions Mapping (5 Questions per Assessment)
 INSERT INTO assessment_questions (assessment_id, question_id) VALUES
-(1, 1), (1, 2), (1, 3), (1, 5),
-(2, 4), (2, 6), (2, 7), (2, 9),
+(1, 1), (1, 2), (1, 3), (1, 5), (1, 8),
+(2, 4), (2, 6), (2, 7), (2, 9), (2, 11),
 (3, 1), (3, 4), (3, 6), (3, 7), (3, 10),
-(4, 17), (4, 19), (4, 20),
-(5, 1), (5, 9), (5, 12),
-(6, 2), (6, 5), (6, 8), (6, 10),
-(7, 3), (7, 13), (7, 14);
+(4, 12), (4, 16), (4, 17), (4, 19), (4, 20),
+(5, 1), (5, 3), (5, 8), (5, 9), (5, 12),
+(6, 2), (6, 5), (6, 8), (6, 10), (6, 15),
+(7, 3), (7, 13), (7, 14), (7, 16), (7, 18);
