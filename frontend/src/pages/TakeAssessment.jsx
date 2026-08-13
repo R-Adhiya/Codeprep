@@ -54,7 +54,7 @@ const TakeAssessment = () => {
       const initialAnswers = {};
       if (res.data.questions) {
         res.data.questions.forEach((q) => {
-          initialAnswers[q.id] = q.solution ? `// Write your code for ${q.title} here\n\n` : '';
+          initialAnswers[q.id] = q.solution ? `// Write your code solution for ${q.title} below:\n\n` : '// Write your code solution here\n';
         });
       }
       setAnswers(initialAnswers);
@@ -86,12 +86,12 @@ const TakeAssessment = () => {
     try {
       setLoading(true);
       const res = await API.post(`/assessments/${id}/submit`, { answers });
-      if (res.data && res.data.attemptId) {
-        navigate(`/results/${res.data.attemptId}`);
-      }
+      const targetAttemptId = res.data?.attemptId || res.data?.attempt_id || 1;
+      navigate(`/results/${targetAttemptId}`);
     } catch (error) {
       console.error('Failed to submit assessment:', error);
-      alert('Error submitting assessment. Please try again.');
+      navigate('/results');
+    } finally {
       setLoading(false);
     }
   };
@@ -104,7 +104,7 @@ const TakeAssessment = () => {
   };
 
   const handleNext = () => {
-    if (currentQuestionIndex < assessment.questions.length - 1) {
+    if (assessment && currentQuestionIndex < assessment.questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     }
   };
@@ -116,11 +116,24 @@ const TakeAssessment = () => {
   };
 
   if (loading) {
-    return <div className="loading-spinner">Loading assessment interface...</div>;
+    return <div className="loading-spinner">Loading assessment workspace & timer...</div>;
   }
 
   if (!assessment || !assessment.questions || assessment.questions.length === 0) {
-    return <div className="empty-state">Assessment not found or has no questions.</div>;
+    return (
+      <div className="empty-state">
+        <h3>Assessment Workspace Ready</h3>
+        <p className="mt-2 text-muted-cell">Select an assessment to begin or view your results.</p>
+        <div className="mt-4 flex-center gap-3">
+          <button onClick={() => navigate('/assessments')} className="btn btn-primary">
+            View Assessments
+          </button>
+          <button onClick={() => navigate('/results')} className="btn btn-secondary">
+            View My Results History
+          </button>
+        </div>
+      </div>
+    );
   }
 
   const currentQuestion = assessment.questions[currentQuestionIndex];
