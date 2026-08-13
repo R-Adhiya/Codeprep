@@ -184,6 +184,12 @@ const executeFallbackQuery = (sql, params = []) => {
 
   // 4. CODING QUESTIONS
   if (sqlLower.includes('from coding_questions')) {
+    if (sqlLower.includes('join assessment_questions')) {
+      const assessmentId = params[0];
+      const mappedQIds = memoryStore.assessment_questions.filter(aq => aq.assessment_id == assessmentId).map(aq => aq.question_id);
+      const questions = memoryStore.coding_questions.filter(q => mappedQIds.includes(q.id));
+      return [questions, []];
+    }
     if (sqlLower.includes('where id = ?')) {
       const q = memoryStore.coding_questions.find(item => item.id == params[0]);
       return [q ? [q] : [], []];
