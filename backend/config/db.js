@@ -136,10 +136,20 @@ const executeFallbackQuery = (sql, params = []) => {
     const user = memoryStore.users.find(u => u.email.toLowerCase() === email);
     return [user ? [user] : [], []];
   }
-  if (sqlLower.includes('select id, name, email, role, created_at from users where id = ?')) {
+  if (sqlLower.includes('select id, name, email, role, created_at from users where id = ?') || sqlLower.includes('select streak_count from users where id = ?')) {
     const id = params[0];
     const user = memoryStore.users.find(u => u.id == id);
     return [user ? [user] : [], []];
+  }
+  if (sqlLower.includes('update users set streak_count')) {
+    const newStreak = params[0];
+    const id = params[1];
+    const user = memoryStore.users.find(u => u.id == id);
+    if (user) {
+      user.streak_count = newStreak;
+      user.last_active = new Date();
+    }
+    return [{ affectedRows: 1 }, []];
   }
   if (sqlLower.includes('insert into users')) {
     const newId = memoryStore.users.length + 1;

@@ -33,6 +33,34 @@ const getUserStats = async (req, res) => {
   }
 };
 
-module.exports = {
-  getUserStats
+// @desc    Claim / Increment daily coding streak
+// @route   POST /api/users/streak
+// @access  Private
+const claimStreak = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    // Fetch current streak
+    const [users] = await dbPool.query('SELECT streak_count FROM users WHERE id = ?', [userId]);
+    const currentStreak = users.length > 0 ? (users[0].streak_count || 5) : 5;
+    const updatedStreak = currentStreak + 1;
+
+    // Update streak in database/store
+    await dbPool.query('UPDATE users SET streak_count = ?, last_active = NOW() WHERE id = ?', [updatedStreak, userId]);
+
+    return res.status(200).json({
+      message: '🔥 Daily Coding Streak Claimed!',
+      streakCount: updatedStreak
+    });
+
+  } catch (error) {
+    console.error('Error claiming streak:', error);
+    return res.status(500).json({ message: 'Server error updating streak', error: error.message });
+  }
 };
+
+module.exports = {
+  getUserStats,
+  claimStreak
+};
+
